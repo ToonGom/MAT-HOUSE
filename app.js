@@ -36,6 +36,8 @@ const ytUrl = (id) => "https://www.youtube.com/shorts/" + id;
 const isPicked = (c, d) => S.picks[c].has(d.k);
 const totalPicks = () => KEYS.reduce((n, c) => n + S.picks[c].size, 0);
 const BOOK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-6-4.2-6 4.2z" stroke-linejoin="round"/></svg>';
+const YT = '<svg class="yt-ico" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="4" fill="#FF0000"/><path d="M8 4.1v5.8L12.9 7z" fill="#FFFFFF"/></svg>';
+const TITLE = "공간탐닉 오사카 · 교토 맛집 정리";
 
 function badges(d) {
   const b = [];
@@ -83,8 +85,16 @@ function card(c, d, opts) {
   const acts = el("div", "acts");
   const vl = CITIES[c].vlab;
   for (const id of d.v) {
-    const l = el("a", "yt", vl[id] || "쇼츠");
+    const l = el("a", "yt");
+    l.innerHTML = YT;
+    l.append(document.createTextNode(vl[id] || "쇼츠"));
     l.href = ytUrl(id); l.target = "_blank"; l.rel = "noopener";
+    l.setAttribute("aria-label", (vl[id] || "쇼츠") + " 영상 재생");
+    l.addEventListener("click", (e) => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey) return;   // modifier-click still opens YouTube
+      e.preventDefault();
+      openPlayer(c, d, id);
+    });
     acts.append(l);
   }
   const g = el("a", "gm", "구글맵");
@@ -357,9 +367,9 @@ function shareText() {
 
 async function sharePicks() {
   const n = totalPicks();
-  const text = "간사이 맛집 족보 — 담은 곳 " + n + "곳\n앱에서 열면 이 목록이 그대로 담겨요 👉 " + shareUrl() + "\n\n" + shareText();
+  const text = TITLE + " — 담은 곳 " + n + "곳\n사이트에서 열면 이 목록이 그대로 담겨요 👉 " + shareUrl() + "\n\n" + shareText();
   if (navigator.share) {
-    try { await navigator.share({ title: "간사이 맛집 족보", text }); return; }
+    try { await navigator.share({ title: TITLE, text }); return; }
     catch (e) { if (e && e.name === "AbortError") return; }
   }
   try { await navigator.clipboard.writeText(text); toast("목록을 복사했어요. 카톡에 붙여넣으세요"); }
@@ -422,6 +432,47 @@ function closeSheet() {
   if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
 }
 
+/* in-site YouTube player */
+let playerFocus = null;
+function openPlayer(c, d, id) {
+  const vl = CITIES[c].vlab;
+  const frame = $("#playerframe"); frame.textContent = "";
+  const f = document.createElement("iframe");
+  f.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) + "?autoplay=1&playsinline=1&rel=0&modestbranding=1";
+  f.title = (vl[id] || "쇼츠") + " — " + d.k;
+  f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+  f.allowFullscreen = true;
+  frame.append(f);
+
+  const cap = $("#playercap"); cap.textContent = "";
+  cap.append(el("b", null, d.k), el("span", null, (vl[id] || "쇼츠") + " · " + d.a));
+
+  const more = $("#playermore"); more.textContent = "";
+  if (d.v.length > 1) {
+    for (const v of d.v) {
+      const b = el("button"); b.type = "button";
+      b.innerHTML = YT; b.append(document.createTextNode(vl[v] || "쇼츠"));
+      b.setAttribute("aria-current", v === id ? "true" : "false");
+      b.addEventListener("click", () => openPlayer(c, d, v));
+      more.append(b);
+    }
+  }
+  const out = el("a", null, "유튜브에서 보기 ↗");
+  out.href = ytUrl(id); out.target = "_blank"; out.rel = "noopener";
+  more.append(out);
+
+  if ($("#player").hidden) playerFocus = document.activeElement;
+  $("#playerback").hidden = false; $("#player").hidden = false;
+  $("#playerclose").focus({ preventScroll: true });
+}
+function closePlayer() {
+  if ($("#player").hidden) return false;
+  $("#playerframe").textContent = "";          // removing the iframe stops playback
+  $("#playerback").hidden = true; $("#player").hidden = true;
+  if (playerFocus && playerFocus.focus) playerFocus.focus({ preventScroll: true });
+  return true;
+}
+
 let tt = null;
 function toast(msg) {
   const t = $("#toast");
@@ -474,7 +525,9 @@ for (const t of document.querySelectorAll(".tab")) t.addEventListener("click", (
 $("#zin").addEventListener("click", () => setZoom(S.zoom[S.city] + 1));
 $("#zout").addEventListener("click", () => setZoom(S.zoom[S.city] - 1));
 $("#sheetback").addEventListener("click", closeSheet);
-addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+$("#playerback").addEventListener("click", closePlayer);
+$("#playerclose").addEventListener("click", closePlayer);
+addEventListener("keydown", (e) => { if (e.key === "Escape" && !closePlayer()) closeSheet(); });
 addEventListener("hashchange", offerImport);
 if ("ResizeObserver" in window) new ResizeObserver(measure).observe($("#appbar")); else addEventListener("resize", measure);
 

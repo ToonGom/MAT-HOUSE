@@ -1,7 +1,7 @@
 /* Offline support: app files are network-first (so edits show up when online)
    and fall back to the cache; Google Fonts are cached on first use. */
-const VERSION = "kansai-v1";
-const FONTS = "kansai-fonts";
+const VERSION = "mathouse-v2";
+const FONTS = "mathouse-fonts";
 const CORE = [
   "./", "./index.html", "./app.js", "./data.js", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"

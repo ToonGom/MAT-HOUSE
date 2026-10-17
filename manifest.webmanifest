@@ -1,7 +1,7 @@
 {
-  "name": "간사이 맛집 족보",
-  "short_name": "맛집 족보",
-  "description": "유튜브 쇼츠에 나온 오사카 61곳 · 교토 52곳을 지도와 목록으로",
+  "name": "공간탐닉 오사카 · 교토 맛집 정리",
+  "short_name": "MAT-HOUSE",
+  "description": "유튜브 공간탐닉 쇼츠에 나온 오사카 61곳 · 교토 52곳을 지도와 목록으로",
   "lang": "ko",
   "start_url": "./",
   "scope": "./",
@@ -10,8 +10,23 @@
   "background_color": "#ECEEE8",
   "theme_color": "#1E3557",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
