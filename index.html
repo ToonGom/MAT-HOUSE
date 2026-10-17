@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ko" data-city="osaka" data-view="list">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>간사이 맛집 족보</title>
+<meta name="description" content="유튜브 쇼츠에 나온 오사카 61곳 · 교토 52곳을 지도와 목록으로. 갈 곳을 담아서 친구에게 그대로 보낼 수 있어요.">
+<meta name="theme-color" content="#1E3557">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="맛집 족보">
+<meta property="og:type" content="website">
+<meta property="og:title" content="간사이 맛집 족보">
+<meta property="og:description" content="오사카 61곳 · 교토 52곳 — 쇼츠에 나온 가게를 지도와 목록으로">
+<meta property="og:image" content="https://toongom.github.io/kansai-food/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://toongom.github.io/kansai-food/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#ECEEE8; --card:#FDFDFB; --card2:#F3F5EF; --line:#D5D9CF; --line2:#E4E7DF; --frame:#DDE1D8;
+  --ink:#14171A; --soft:#59626A; --faint:#8A9298; --ok:#3C7A3A;
+  --bar:#1E3557; --on-bar:#F2F5F0; --brand:#1E3557; --hot:#B93A25; --water:#B6C6CD;
+  --c1:#C08A1F; --c2:#7A4B2A; --c3:#B93A25; --c4:#82559A; --c5:#2E6F8E; --c6:#2F7D62; --c7:#A24C7A; --c8:#7C858C;
+  --tabh:60px; --barh:56px;
+}
+:root[data-city="kyoto"]{
+  --bar:#2E4A38; --brand:#2E4A38; --hot:#B54A22; --water:#AFC4C6;
+  --c1:#5E7F3C; --c2:#B0801C; --c3:#2E6F8E; --c4:#B54A22; --c5:#7A4B2A; --c6:#7C858C;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#101315; --card:#181C1F; --card2:#1E2327; --line:#2B3136; --line2:#22282C; --frame:#0A0C0E;
+    --ink:#E4E8E3; --soft:#97A2AA; --faint:#6F7B83; --ok:#86C27E;
+    --bar:#172539; --on-bar:#E8EEF5; --brand:#8CB0DC; --hot:#E5735A; --water:#2C4048;
+    --c1:#E0AC4E; --c2:#B08258; --c3:#E5735A; --c4:#B78ECD; --c5:#6BA8C8; --c6:#5FB395; --c7:#D687AE; --c8:#9AA4AB;
+  }
+  :root[data-city="kyoto"]{
+    --bar:#1B2A20; --brand:#9EC0A3; --hot:#E08558; --water:#2B3D3F;
+    --c1:#9DBE72; --c2:#DDAB4B; --c3:#6BA8C8; --c4:#E0855C; --c5:#B08258; --c6:#9AA4AB;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--frame);color:var(--ink);
+  font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent
+}
+button{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+[hidden]{display:none!important}
+.app{max-width:560px;margin:0 auto;min-height:100vh;min-height:100dvh;background:var(--paper);position:relative}
+@media (min-width:600px){.app{box-shadow:0 0 0 1px var(--line)}}
+
+/* app bar */
+.appbar{
+  position:sticky;top:0;z-index:30;background:var(--bar);color:var(--on-bar);
+  padding:calc(env(safe-area-inset-top) + 10px) 14px 10px 16px;display:flex;align-items:center;gap:10px
+}
+.appbar h1{font-family:Hahmlet,"Apple SD Gothic Neo",serif;font-weight:700;font-size:19px;margin:0;flex:1;letter-spacing:-.01em;white-space:nowrap}
+.seg{display:flex;background:rgba(255,255,255,.13);border-radius:999px;padding:3px;flex:none}
+.seg button{border:0;background:transparent;color:inherit;opacity:.78;font-size:13.5px;font-weight:600;padding:6px 14px;border-radius:999px;cursor:pointer;min-height:32px}
+.seg button[aria-pressed="true"]{background:var(--on-bar);color:var(--bar);opacity:1}
+[data-view="picks"] .seg{visibility:hidden}
+
+/* category chips */
+.chips{
+  position:sticky;top:var(--barh);z-index:20;background:var(--paper);border-bottom:1px solid var(--line);
+  display:flex;gap:6px;overflow-x:auto;padding:9px 16px;scrollbar-width:none
+}
+.chips::-webkit-scrollbar{display:none}
+[data-view="picks"] .chips{display:none}
+.chip{
+  flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);
+  color:var(--soft);font-size:13px;padding:5px 12px;border-radius:999px;cursor:pointer;min-height:32px;white-space:nowrap
+}
+.chip i{width:8px;height:8px;border-radius:50%;flex:none}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.chip.sm{font-size:12px;min-height:28px;padding:3px 10px}
+
+main{padding-bottom:calc(var(--tabh) + env(safe-area-inset-bottom) + 16px)}
+
+/* intro */
+.intro{padding:14px 16px 4px}
+.stats{margin:0;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--soft);letter-spacing:.02em}
+.stats b{color:var(--ink);font-weight:600}
+.blurb{margin:4px 0 0;font-size:13px;color:var(--soft);max-width:60ch}
+
+/* groups & cards */
+.group-h{display:flex;align-items:baseline;gap:8px;padding:20px 16px 8px}
+.group-h h2{font-family:Hahmlet,serif;font-weight:500;font-size:18px;margin:0;letter-spacing:-.01em}
+.group-h span{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--faint)}
+.card{
+  position:relative;background:var(--card);border-top:1px solid var(--line2);
+  padding:13px 54px 14px 15px;border-left:3px solid transparent
+}
+.group > .card:last-of-type{border-bottom:1px solid var(--line2)}
+.card.t3{border-left-color:var(--hot)}
+.card.t2{border-left-color:var(--brand)}
+.card .nm{font-weight:600;font-size:16px;letter-spacing:-.01em;line-height:1.35}
+.card.low .nm{color:var(--soft)}
+.card .sub{font-size:12px;color:var(--faint);margin-top:1px}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.badge{font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.02em;line-height:1;padding:4px 6px 3px;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.badge.again{background:var(--hot);border-color:var(--hot);color:#fff}
+.badge.jokbo{color:var(--brand)}
+.badge.reps{color:var(--soft)}
+.badge.reps.hot{color:var(--hot)}
+.badge.good{color:var(--ok)}
+.badge.meh{color:var(--faint)}
+.menu{margin-top:8px;font-size:14px}
+.yen{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:13.5px;color:var(--hot);white-space:nowrap}
+.note{margin-top:3px;font-size:13px;color:var(--soft)}
+.hours{margin-top:5px;font-size:12px;color:var(--soft);font-variant-numeric:tabular-nums}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.acts a,.acts button{
+  display:inline-flex;align-items:center;gap:6px;font-size:12px;text-decoration:none;color:var(--soft);
+  border:1px solid var(--line);border-radius:999px;padding:4px 11px 4px 9px;min-height:30px;background:transparent;cursor:pointer
+}
+.acts a.yt::before{content:"";border-left:6px solid currentColor;border-top:4px solid transparent;border-bottom:4px solid transparent;opacity:.75}
+.acts a.gm,.acts button.onmap{color:var(--brand)}
+.mark{
+  position:absolute;top:8px;right:6px;width:44px;height:44px;border:0;background:none;
+  display:grid;place-items:center;cursor:pointer;color:var(--faint);border-radius:10px
+}
+.mark svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.8;fill:none}
+.mark[aria-pressed="true"]{color:var(--hot)}
+.mark[aria-pressed="true"] svg{fill:currentColor}
+.aside{background:var(--card2);padding:14px 16px;border-bottom:1px solid var(--line2)}
+.aside h3{font-family:Hahmlet,serif;font-weight:500;font-size:15px;margin:0 0 4px}
+.aside p{margin:0;font-size:13px;color:var(--soft)}
+.aside ul{margin:8px 0 0;padding-left:18px;font-size:13px;color:var(--soft)}
+.aside li{margin-bottom:3px}
+
+/* map */
+.mapbar{display:flex;align-items:center;gap:10px;padding:10px 16px}
+.mapbar p{margin:0;font-size:12px;color:var(--faint);flex:1}
+.zoom{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card);flex:none}
+.zoom button{width:38px;height:34px;border:0;background:none;font-family:"IBM Plex Mono",monospace;font-size:17px;cursor:pointer}
+.zoom button:disabled{opacity:.3;cursor:default}
+.zoom span{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--soft);min-width:30px;text-align:center;border-inline:1px solid var(--line);line-height:34px}
+.mapwrap{overflow-x:auto;background:var(--card);border-block:1px solid var(--line);--z:1}
+.mapwrap svg{display:block;width:calc(var(--z) * 100%);height:auto}
+.river{fill:none;stroke:var(--water);stroke-width:6;stroke-linejoin:round;stroke-linecap:round}
+.rail{fill:none;stroke:var(--line);stroke-width:3;stroke-linejoin:round}
+.subway{fill:none;stroke:var(--faint);stroke-width:1.8;stroke-dasharray:6 6;opacity:.6;stroke-linecap:round}
+.grid{fill:none;stroke:var(--line);stroke-width:1.4}
+.stn{fill:var(--soft)}
+.mark-l{fill:none;stroke:var(--soft);stroke-width:1.5}
+.lbl{font-family:"IBM Plex Sans KR",sans-serif;font-size:12.5px;font-weight:500;fill:var(--soft);paint-order:stroke;stroke:var(--card);stroke-width:3px;stroke-linejoin:round}
+.lead{stroke:var(--faint);stroke-width:.9;opacity:.5}
+.pin{cursor:pointer}
+.pin .hit{fill:transparent}
+.pin .dot{stroke:var(--card);stroke-width:1.5}
+.pin .ring{fill:none;stroke:var(--ink);stroke-width:2.2}
+.pin:hover .dot,.pin:focus-visible .dot{stroke:var(--ink);stroke-width:2.5}
+.pin:focus{outline:none}
+.pin.dim{opacity:.1;pointer-events:none}
+.pin.pulse .ring,.pin.pulse .dot{animation:pulse .9s ease-out 2}
+@keyframes pulse{50%{stroke-width:6}}
+.offmap{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:12px 16px}
+.offmap .lab{font-size:11px;letter-spacing:.08em;color:var(--faint);margin-right:2px}
+.offmap .lab:not(:first-child){margin-left:6px}
+
+/* picks */
+.picks-h{display:flex;align-items:center;gap:10px;padding:16px 16px 4px}
+.picks-h h2{font-family:Hahmlet,serif;font-weight:700;font-size:22px;margin:0}
+.picks-h .n{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--faint);flex:1}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer;min-height:40px}
+.btn.primary{background:var(--hot);border-color:var(--hot);color:#fff}
+.btn:disabled{opacity:.4;cursor:default}
+.empty{padding:48px 24px;text-align:center;color:var(--soft)}
+.empty p{margin:0 0 6px}
+.empty .big{font-family:Hahmlet,serif;font-size:18px;color:var(--ink)}
+.empty .sm{font-size:13px;color:var(--faint);max-width:32ch;margin:6px auto 0}
+.fine{font-size:12px;color:var(--faint);padding:16px;margin:0;max-width:60ch}
+.fine a{color:var(--soft)}
+
+/* tab bar */
+.tabbar{
+  position:fixed;bottom:0;left:0;right:0;z-index:30;max-width:560px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);background:var(--card);border-top:1px solid var(--line);
+  height:calc(var(--tabh) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom)
+}
+.tab{border:0;background:none;font-size:11.5px;color:var(--faint);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;position:relative}
+.tab svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-current="page"]{color:var(--brand);font-weight:600}
+.tab .cnt{
+  position:absolute;top:7px;left:calc(50% + 7px);background:var(--hot);color:#fff;
+  font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;line-height:17px;
+  min-width:17px;height:17px;border-radius:9px;padding:0 4px;text-align:center
+}
+
+/* banner, sheet, toast */
+.banner{background:var(--card);border-bottom:1px solid var(--line);padding:12px 16px}
+.banner p{margin:0 0 8px;font-size:14px;font-weight:500}
+.banner .row{display:flex;gap:8px}
+.sheet-back{position:fixed;inset:0;background:rgba(8,10,12,.42);z-index:40}
+.sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:41;max-width:560px;margin:0 auto;background:var(--card);
+  border-radius:16px 16px 0 0;padding:6px 0 calc(14px + env(safe-area-inset-bottom));max-height:80vh;max-height:80dvh;overflow:auto;
+  box-shadow:0 -10px 32px rgba(0,0,0,.2);animation:up .18s ease-out
+}
+@keyframes up{from{transform:translateY(24px);opacity:.6}}
+.sheet .grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:4px auto 4px}
+.sheet .card{border-top:0;border-left-color:transparent}
+.sheet .cta{display:block;width:calc(100% - 30px);margin:4px 15px 0;min-height:48px;border-radius:12px;border:0;font-size:15px;font-weight:600;background:var(--hot);color:#fff;cursor:pointer}
+.sheet .cta[aria-pressed="true"]{background:var(--card2);color:var(--ink);border:1px solid var(--line)}
+.toast{
+  position:fixed;left:50%;bottom:calc(var(--tabh) + env(safe-area-inset-bottom) + 14px);transform:translate(-50%,8px);
+  z-index:50;background:var(--ink);color:var(--paper);font-size:13.5px;padding:9px 16px;border-radius:999px;
+  opacity:0;transition:opacity .16s,transform .16s;pointer-events:none;white-space:nowrap
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="appbar" id="appbar">
+    <h1>간사이 맛집 족보</h1>
+    <div class="seg" role="group" aria-label="도시 선택">
+      <button type="button" data-city="osaka" aria-pressed="true">오사카</button>
+      <button type="button" data-city="kyoto" aria-pressed="false">교토</button>
+    </div>
+  </header>
+  <div class="banner" id="banner" hidden></div>
+  <nav class="chips" id="chips" aria-label="분류"></nav>
+
+  <main>
+    <section class="view" id="v-list">
+      <div class="intro"><p class="stats" id="stats"></p><p class="blurb" id="blurb"></p></div>
+      <div id="list"></div>
+      <p class="fine" id="credit"></p>
+    </section>
+
+    <section class="view" id="v-map" hidden>
+      <div class="mapbar">
+        <p id="pinnote"></p>
+        <div class="zoom" role="group" aria-label="지도 확대">
+          <button type="button" id="zout" aria-label="축소">−</button>
+          <span id="zlabel">1×</span>
+          <button type="button" id="zin" aria-label="확대">+</button>
+        </div>
+      </div>
+      <div class="mapwrap" id="mapwrap"><svg id="map" role="img" aria-label="맛집 위치 약도"></svg></div>
+      <div class="offmap" id="offmap"></div>
+    </section>
+
+    <section class="view" id="v-picks" hidden>
+      <div id="picks"></div>
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="화면">
+    <button type="button" class="tab" data-v="list" aria-current="page">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>목록
+    </button>
+    <button type="button" class="tab" data-v="map">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5l6-2.5 6 2.5 6-2.5v13.5l-6 2.5-6-2.5-6 2.5z"/><path d="M9 4v13.5M15 6.5V20"/></svg>지도
+    </button>
+    <button type="button" class="tab" data-v="picks">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"/></svg>담은 곳<span class="cnt" id="pickcnt" hidden>0</span>
+    </button>
+  </nav>
+
+  <div class="sheet-back" id="sheetback" hidden></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="가게 정보" hidden>
+    <div class="grab"></div>
+    <div id="sheetbody"></div>
+  </div>
+  <div class="toast" id="toast" role="status" hidden></div>
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+</script>
+</body>
+</html>
